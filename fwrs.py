@@ -43,13 +43,7 @@ class ForRev:
         self.iface.addPluginToMenu("Forward reverse Toolbar", self.revAction)
 
 
-        icon = QIcon(os.path.dirname(__file__) + "/images/sett.png")
-        self.settAction = QAction(icon, "Settings", self.iface.mainWindow())
-        self.settAction.setObjectName('settings')
-        self.settAction.triggered.connect(self.sett)
-        # set action for button click
-        self.toolbar.addAction(self.settAction)
-        self.iface.addPluginToMenu("Forward reverse Toolbar", self.settAction)
+
 
 
 
@@ -77,11 +71,12 @@ class ForRev:
 
 
     def forward(self):
+ 
         layer = iface.activeLayer()
         count = layer.selectedFeatureCount()
         selection = layer.selectedFeatures()
 
-    try:
+
         if count == 1:
             for feature in selection:
                 cur_id = feature.id()
@@ -91,34 +86,35 @@ class ForRev:
                 layer.select(cur_id)
                 iface.actionZoomToSelected().trigger()
 
-
+  
         else:
-                self.iface.messageBar().pushMessage("Select one vector feature")
-    except:
-            self.iface.messageBar().pushMessage("Reached First object")
+            self.iface.messageBar().pushMessage("Select one vector feature")
+
 
 
 
     def reverse(self):
+
         layer = iface.activeLayer()
         count = layer.selectedFeatureCount()
         selection = layer.selectedFeatures()
-        try:
-            if count == 1:
-                for feature in selection:
 
-                    cur_id = feature.id()
-                    print(cur_id)
-                    cur_id = cur_id-1
+        if count == 1:
+            for feature in selection:
+
+                cur_id = feature.id()
+                print(cur_id)
+                cur_id = cur_id-1
+                if cur_id > -1:
+                    
                     layer.removeSelection()
 
                     layer.select(cur_id)
                     iface.actionZoomToSelected().trigger()
+                else: 
 
+                    self.iface.messageBar().pushMessage("First feature reached")
 
-            else:
-                self.iface.messageBar().pushMessage("Select one vector feature")
-        except:
-            self.iface.messageBar().pushMessage("Reached Last object")
-
-
+        else:
+            self.iface.messageBar().pushMessage("Select one vector feature")
+    
