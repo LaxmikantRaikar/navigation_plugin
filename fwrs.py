@@ -17,11 +17,13 @@ class ForRev:
         self.toolbar.setObjectName('ForrevToolsToolbar')
 
     def initGui(self):
-
+        #create toolbar buttons
         icon = QIcon(os.path.dirname(__file__) + "/images/for.png")
         self.farAction = QAction(icon, "Forward one feature", self.iface.mainWindow())
+        #add shortcut to button
         self.iface.registerMainWindowAction(self.farAction, "right")
         self.farAction.setObjectName('forwardtool')
+        # set action for button click
         self.farAction.triggered.connect(self.forward)
         self.farAction.setCheckable(True)
         self.toolbar.addAction(self.farAction)
@@ -31,10 +33,12 @@ class ForRev:
 
         icon = QIcon(os.path.dirname(__file__) + "/images/rev.png")
         self.revAction = QAction(icon, "reverse one feature", self.iface.mainWindow())
+        #add shortcut to button
         self.iface.registerMainWindowAction(self.revAction, "left")
         self.revAction.setObjectName('reversetool')
         self.revAction.triggered.connect(self.reverse)
         self.revAction.setCheckable(True)
+        # set action for button click
         self.toolbar.addAction(self.revAction)
         self.iface.addPluginToMenu("Forward reverse Toolbar", self.revAction)
 
@@ -43,7 +47,7 @@ class ForRev:
 
 
     def unload(self):
-        '''Unload LatLonTools from the QGIS interface'''
+        '''Unload plugin from the QGIS interface'''
 
         self.iface.removePluginMenu('Forward reverse Toolbar', self.farAction)
         self.iface.removePluginMenu('Forward reverse Toolbar', self.revAction)
@@ -62,10 +66,17 @@ class ForRev:
     
         
     def forward(self):
-        layer = iface.activeLayer()
-        feature_count = layer.featureCount
-        count = layer.selectedFeatureCount()
-        selection = layer.selectedFeatures() 
+         try:
+            layer = iface.activeLayer()
+            feature_count = layer.featureCount
+            count = layer.selectedFeatureCount()
+            selection = layer.selectedFeatures()
+
+        except:
+            print("Open")
+
+        
+        
         if count == 1:
             for feature in selection:    
                 try: 

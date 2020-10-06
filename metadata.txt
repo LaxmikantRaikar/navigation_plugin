@@ -1,9 +1,9 @@
 [general]
 name=Forward Reverse Tool
 qgisMinimumVersion=3.4
-description= forward and backward
-version=3.3.16
+description= This tool can be used to navigate vector features.
+version=1.1.0
 author=Lax
-email=lacky0802@gmail.com
-about= Nothing more
+email=solutionsappi@gmail.com
+about= This tool can be used to navigate vector features. Using this tool one can easily navigate vector features one by one.
 repository=http://repo
