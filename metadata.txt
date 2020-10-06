@@ -1,0 +1,9 @@
+[general]
+name=Forward Reverse Tool
+qgisMinimumVersion=3.4
+description= forward and backward
+version=3.3.16
+author=Lax
+email=lacky0802@gmail.com
+about= Nothing more
+repository=http://repo
