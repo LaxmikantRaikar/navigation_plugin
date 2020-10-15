@@ -1,9 +1,15 @@
 [general]
-name=Forward Reverse Tool
+name=NavigateFeaturesTool
 qgisMinimumVersion=3.4
 description= This tool can be used to navigate vector features.
 version=1.1.0
 author=Lax
 email=solutionsappi@gmail.com
-about= This tool can be used to navigate vector features. Using this tool one can easily navigate vector features one by one.
+about= 
+	There are two buttons in this plugin. 
+	1) Select any vector feature from which you want to start navigating or select first feature from attribute table.
+	2) Use buttons to navigate to next or prevous features.
+	3) Shortcut can also be used to navigate (left key to jump to next feature and right key to jump to previous feature).
 repository=http://repo
+category=Plugins
+icon=images/icon.png

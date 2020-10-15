@@ -13,13 +13,13 @@ class ForRev:
     def __init__(self, iface):
         self.iface = iface
         self.canvas = iface.mapCanvas()
-        self.toolbar = self.iface.addToolBar('Forward reverse Toolbar')
-        self.toolbar.setObjectName('ForrevToolsToolbar')
+        self.toolbar = self.iface.addToolBar('Navigate Features Toolbar')
+        self.toolbar.setObjectName('NavigateFeaturesToolbar')
 
     def initGui(self):
         #create toolbar buttons
         icon = QIcon(os.path.dirname(__file__) + "/images/for.png")
-        self.farAction = QAction(icon, "Forward one feature", self.iface.mainWindow())
+        self.farAction = QAction(icon, "Jump to next feature", self.iface.mainWindow())
         #add shortcut to button
         self.iface.registerMainWindowAction(self.farAction, "right")
         self.farAction.setObjectName('forwardtool')
@@ -27,12 +27,12 @@ class ForRev:
         self.farAction.triggered.connect(self.forward)
         #self.farAction.setCheckable(True)
         self.toolbar.addAction(self.farAction)
-        self.iface.addPluginToMenu("Forward reverse Toolbar", self.farAction)
+        self.iface.addPluginToMenu("Navigate Features Toolbar", self.farAction)
 
 
 
         icon = QIcon(os.path.dirname(__file__) + "/images/rev.png")
-        self.revAction = QAction(icon, "Reverse one feature", self.iface.mainWindow())
+        self.revAction = QAction(icon, "Jump to previous feature", self.iface.mainWindow())
         #add shortcut to button
         self.iface.registerMainWindowAction(self.revAction, "left")
         self.revAction.setObjectName('reversetool')
@@ -40,7 +40,7 @@ class ForRev:
         #self.revAction.setCheckable(True)  does not needed
         # set action for button click
         self.toolbar.addAction(self.revAction)
-        self.iface.addPluginToMenu("Forward reverse Toolbar", self.revAction)
+        self.iface.addPluginToMenu("Navigate Features Toolbar", self.revAction)
 
 
 
@@ -51,28 +51,27 @@ class ForRev:
     def unload(self):
         '''Unload plugin from the QGIS interface'''
 
-        self.iface.removePluginMenu('Forward reverse Toolbar', self.farAction)
-        self.iface.removePluginMenu('Forward reverse Toolbar', self.revAction)
-        self.iface.removePluginMenu('Forward reverse Toolbar', self.settAction)
+        self.iface.removePluginMenu('Navigate Features Toolbar', self.farAction)
+        self.iface.removePluginMenu('Navigate Features Toolbar', self.revAction)
 
         # Remove Toolbar Icons
         self.iface.removeToolBarIcon(self.farAction)
         self.iface.removeToolBarIcon(self.revAction)
-        self.iface.removeToolBarIcon(self.settAction)
 
-
+        #
         self.iface.unregisterMainWindowAction(self.farAction)
         self.iface.unregisterMainWindowAction(self.revAction)
 
         del self.toolbar
 
-    def sett(self):
-        self.iface.messageBar().pushMessage("Settings add")
 
 
     def forward(self):
  
         layer = iface.activeLayer()
+
+        total_count = layer.featureCount()
+        #print(total_count)
         count = layer.selectedFeatureCount()
         selection = layer.selectedFeatures()
 
@@ -82,10 +81,12 @@ class ForRev:
                 cur_id = feature.id()
                 print(cur_id)
                 cur_id = cur_id+1
-                layer.removeSelection()
-                layer.select(cur_id)
-                iface.actionZoomToSelected().trigger()
-
+                if cur_id < total_count:
+                    layer.removeSelection()
+                    layer.select(cur_id)
+                    iface.actionZoomToSelected().trigger()
+                else:
+                    self.iface.messageBar().pushMessage("Last feature reached")
   
         else:
             self.iface.messageBar().pushMessage("Select one vector feature")
